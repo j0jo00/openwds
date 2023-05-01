@@ -3,8 +3,25 @@ from flask import render_template, request
 from run import app
 from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter, update_counterbyid
 from wxcloudrun.model import Counters
-from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
+from wxcloudrun.response import make_succ_empty_response, make_succ_str_response,make_succ_response, make_err_response
+from wxcloudrun import get_wx_token
+import hashlib
 
+@app.route.GET('/')
+def checkSignature(request:request,signature:signature,timestamp:timestamp,nonce:nonce,
+                   echostr:echostr):
+    """
+    微信服务器消息认证，配置服务器
+    """
+    if not signature or not timestamp or not nonce or echostr:
+        return make_succ_str_response('false') 
+
+    _ = "".join(sorted([get_wx_token(),timestamp,nonce]))
+    sign = hashlib.sha1(_.encode('UTF-8')).hexdigest()
+    if sign == signature:
+        return make_succ_str_response(echostr)
+    else:
+        return make_succ_str_response('false')
 
 @app.route('/')
 def index():

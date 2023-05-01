@@ -1,7 +1,10 @@
 import os
 
 # 是否开启debug模式
-DEBUG = True
+DEBUG = False
+
+# 微信Token
+wx_token = 'wdswdswds'
 
 # 读取数据库环境变量
 username = os.environ.get("MYSQL_USERNAME", 'root')

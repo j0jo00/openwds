@@ -22,3 +22,7 @@ from wxcloudrun import views
 
 # 加载配置
 app.config.from_object('config')
+
+# 微信Token
+def get_wx_token():
+    return config.wx_token
